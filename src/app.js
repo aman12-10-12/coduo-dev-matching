@@ -55,14 +55,14 @@ app.post("/login", async (req, res) => {
             throw new Error("Invalid Cerendentials!!")
         }
 
-        const isPasswordValid = await bcrypt.compare(password, user.password)
+        const isPasswordValid = await user.validatePassword(password)
         if(isPasswordValid){
 
             // create a JWT token
-            const token = await jwt.sign({_id : user._id}, "@AmanSamrat01!@#$1234WEBtoken")
+            const token = await user.getJWT()
 
             // Add the token to cookie and sends along with response back to user
-            res.cookie("token", token)
+            res.cookie("token", token, {expires: new Date(Date.now() + 24 * 3600000)}) // cookie expire in 24 hr
 
             res.send("Log in Successfull")
         }
@@ -84,59 +84,11 @@ app.get("/profile", userAuth, async (req, res) => {
     }
 })
 
-//  GET user by emailId
-app.get("/user", async (req, res) => {
-    const userEmail = req.body.emailId
-
-    try {
-        const user = await User.find({ emailId : userEmail})
-        if (user.length === 0) {
-            res.status(402).send("User Not Found")
-        }
-        else {
-            res.send(user)
-        }
-    }
-    catch(err)
-    {
-        res.status(400).send("Error Occured While fetching : " + err.message)
-    }
+app.post("/sendConnectionRequest", userAuth, (req, res) => {
+    const user = req.user
+    console.log("Sending Connection Request")
+    res.send(`${ user.firstName } Sents COnnection Request`)
 })
-
-// Feed API - get all user
-app.get("/feed", async (req, res) => {
-
-    try {
-        const user = await User.find({})
-        if (user.length === 0) {
-            res.status(402).send("User Not Found")
-        }
-        else {
-            res.send(user)
-        }
-    }
-    catch(err)
-    {
-        res.status(400).send("Error Occured While fetching : " + err.message)
-    }
-})
-
-//  deleting user
-app.delete("/user", async (req, res) => {
-    const userId = req.body.userId
-    console.log(userId)
-    try {
-        // const user = await User.findOneAndDelete({ _id : userId}) // {This and below code work as same but diffrence is only in syntax the below one is shorthand for this}
-        const user = await User.findByIdAndDelete(userId)
-        res.send("User Deleted Successfully")
-    }
-    catch(err)
-    {
-        res.status(400).send("Error Occured While fetching : " + err.message)
-    }
-})
-
-
 
 
 connectDb()
@@ -149,11 +101,3 @@ connectDb()
     .catch((err) => {
         console.error("DataBase can not be conneccted")
     })
-
-
-
-// // Now we are creating a server and listen to a port
-//     // we can also pass a callback function in .listen() this callback function only be called when my server once up and running
-//     app.listen(7777, () => {
-//         console.log("Server is succesfully listening on port 7777")
-// })
