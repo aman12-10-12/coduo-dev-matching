@@ -1,7 +1,7 @@
 const express = require("express")
 const { userAuth } = require("../middlewares/auth.js")
 const ConnectionRequest = require("../models/connectionRequest.js")
-const { validateSendRequest } = require("../utils-helper/validation.js")
+const { validateSendRequest, validateReviewRequest } = require("../utils-helper/validation.js")
 
 
 const requestRouter = express.Router()
@@ -36,5 +36,37 @@ requestRouter.post("/request/send/:status/:toUserId", userAuth, async (req, res)
         res.status(400).send("ERROR : " + err.message)
     }
 })
+requestRouter.post("/request/review/:status/:requestedId",userAuth, async (req, res) => {
+        try {
+            // calling validation
+            validateReviewRequest(req.params);
+
+            const loggedInUser = req.user;
+            const { status, requestedId } = req.params;
+
+            const updatedConnectionRequest = await ConnectionRequest.findOne({
+                _id: requestedId,
+                toUserId: loggedInUser._id,
+                status: "interested"
+            });
+
+            if (!updatedConnectionRequest) {
+                throw new Error("Connection Request not Found");
+            }
+
+            updatedConnectionRequest.status = status;
+
+            const data = await updatedConnectionRequest.save();
+
+            res.json({
+                message: "Connection Request " + status,
+                data,
+            });
+
+        } catch (err) {
+            res.status(400).send("ERROR : " + err.message);
+        }
+    }
+);
 
 module.exports = requestRouter

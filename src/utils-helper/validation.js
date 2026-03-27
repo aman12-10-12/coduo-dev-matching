@@ -76,9 +76,27 @@ const validateSendRequest = async ({
   }
 };
 
+const validateReviewRequest = (params) => {
+    const { status, requestedId } = params;
+
+    if (!["accepted", "rejected"].includes(status)) {
+        throw new Error("Invalid status");
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(requestedId)) {
+      throw new Error("Invalid request ID format");
+    }
+
+    if (!requestedId) {
+        throw new Error("Requested ID is required");
+    }
+};
+
+
 module.exports = {
     validateSignUpData,
     validateEditProfileData,
     validateResetPassword,
     validateSendRequest,
+    validateReviewRequest,
 }

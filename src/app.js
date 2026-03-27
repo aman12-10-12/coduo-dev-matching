@@ -1,13 +1,14 @@
 const express = require('express')
 const cookieParser = require("cookie-parser")
 const connectDb = require("./config/database.js")
-const User = require("./models/user.js")
-const { userAuth } = require("./middlewares/auth.js")
+// const User = require("./models/user.js")
+// const { userAuth } = require("./middlewares/auth.js")
 
 // router
 const authRouter = require("./router/auth.js")
 const profileRouter = require("./router/profile.js")
 const requestRouter = require("./router/request.js")
+const userRouter = require("./router/user.js")
 
 // creating an instance of express
 const app = express()
@@ -18,6 +19,7 @@ app.use(cookieParser())
 app.use("/", authRouter)
 app.use("/", profileRouter)
 app.use("/", requestRouter)
+app.use("/", userRouter)
 
 
 connectDb()
