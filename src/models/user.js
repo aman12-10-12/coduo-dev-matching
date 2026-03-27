@@ -58,11 +58,15 @@ const userSchema = new mongoose.Schema({
 
     gender : {
         type : String,
-        validate(value) {
-            if(!["male", "female", "others"].includes(value)) {
-                throw new Error("Gender Data Is not valid it must should be [male, female, others]")
-            }
+        enum : {
+            values : ["male", "female", "others"],
+            message : `{VALUE} is not a valid gender type`
         }
+        // validate(value) {
+        //     if(!["male", "female", "others"].includes(value)) {
+        //         throw new Error("Gender Data Is not valid it must should be [male, female, others]")
+        //     }
+        // }
     },
 
     photoUrl : {
@@ -102,6 +106,12 @@ userSchema.methods.validatePassword = async function (passwordInputByUser) {
 
     const isPasswordValid = await bcrypt.compare(passwordInputByUser, passwordHash)
     return isPasswordValid
+}
+
+userSchema.methods.getJWTForNewPassword = async function() {
+    const user = this
+    const tokenForNewPassword = await jwt.sign({ _id : user._id }, "@AmanSamrat01@Pandey", { expiresIn : "20m"})
+    return tokenForNewPassword
 }
 
 module.exports = mongoose.model("User", userSchema)
