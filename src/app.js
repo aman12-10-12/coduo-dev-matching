@@ -1,8 +1,7 @@
 const express = require('express')
 const cookieParser = require("cookie-parser")
 const connectDb = require("./config/database.js")
-// const User = require("./models/user.js")
-// const { userAuth } = require("./middlewares/auth.js")
+const cors = require("cors")
 
 // router
 const authRouter = require("./router/auth.js")
@@ -12,6 +11,16 @@ const userRouter = require("./router/user.js")
 
 // creating an instance of express
 const app = express()
+
+app.use(cors({
+    origin : "http://localhost:5173",
+    credentials : true,
+}))
+
+app.options("*", cors({
+  origin: "http://localhost:5173",
+  credentials: true,
+}));
 
 app.use(express.json())
 app.use(cookieParser())

@@ -57,7 +57,7 @@ authRouter.post("/login", async (req, res) => {
             // Add the token to cookie and sends along with response back to user
             res.cookie("token", token, {expires: new Date(Date.now() + 24 * 3600000)}) // cookie expire in 24 hr
 
-            res.send("Log in Successfull")
+            res.send(user)
         }
         else {
             throw new Error("Invalid Cerendentials!!!")
