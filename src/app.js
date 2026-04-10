@@ -13,14 +13,16 @@ const userRouter = require("./router/user.js")
 const app = express()
 
 app.use(cors({
-    origin : "http://localhost:5173",
-    credentials : true,
+    origin: "http://localhost:5173",
+    credentials: true,
+    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type']
 }))
 
-app.options("*", cors({
-  origin: "http://localhost:5173",
-  credentials: true,
-}));
+// app.options("*", cors({
+//   origin: "http://localhost:5173",
+//   credentials: true,
+// }));
 
 app.use(express.json())
 app.use(cookieParser())

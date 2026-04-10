@@ -25,9 +25,9 @@ profileRouter.patch("/profile/edit", userAuth, async(req, res) => {
 
         const loggedInUser = req.user
 
-        await Object.keys(req.body).forEach((key) => (loggedInUser[key] = req.body[key]))
+        Object.keys(req.body).forEach((key) => (loggedInUser[key] = req.body[key]))
 
-        loggedInUser.save()
+        await loggedInUser.save()
 
         res.json({message : `${loggedInUser.firstName} - Your profile successfully updated`, data : loggedInUser})
     }
