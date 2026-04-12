@@ -1,13 +1,13 @@
 const express = require('express')
 const cookieParser = require("cookie-parser")
-const connectDb = require("./config/database.js")
+const connectDb = require("./src/config/database.js")
 const cors = require("cors")
 
 // router
-const authRouter = require("./router/auth.js")
-const profileRouter = require("./router/profile.js")
-const requestRouter = require("./router/request.js")
-const userRouter = require("./router/user.js")
+const authRouter = require("./src/router/auth.js")
+const profileRouter = require("./src/router/profile.js")
+const requestRouter = require("./src/router/request.js")
+const userRouter = require("./src/router/user.js")
 
 // creating an instance of express
 const app = express()

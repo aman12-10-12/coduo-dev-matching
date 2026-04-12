@@ -49,7 +49,7 @@ userRouter.get("/user/connection", userAuth, async (req, res) => {
         if (!connectionRequestData || connectionRequestData.length === 0) {
             return res.json({
                 message: "No connection found",
-                data: [],
+                finalData: [],
             });
         }
 

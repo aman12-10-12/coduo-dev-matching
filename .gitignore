@@ -1,5 +1,3 @@
 node_modules/
 important-data.txt
 route_handler.txt
-src/config/database.js
-/database
