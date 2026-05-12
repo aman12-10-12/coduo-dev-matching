@@ -96,7 +96,7 @@ const userSchema = new mongoose.Schema({
 userSchema.methods.getJWT = async function () {
     const user = this
 
-    const token = await jwt.sign({ _id: user._id }, "@AmanSamrat01!@#$1234WEBtoken", { expiresIn: "1d" })
+    const token = await jwt.sign({ _id: user._id }, process.env.JWT_SECRET_KEY, { expiresIn: "1d" })
     return token
 }
 
@@ -110,7 +110,7 @@ userSchema.methods.validatePassword = async function (passwordInputByUser) {
 
 userSchema.methods.getJWTForNewPassword = async function() {
     const user = this
-    const tokenForNewPassword = await jwt.sign({ _id : user._id }, "@AmanSamrat01@Pandey", { expiresIn : "20m"})
+    const tokenForNewPassword = await jwt.sign({ _id : user._id }, process.env.JWT_SECRET_KEY_FOR_RESET_PASSWORD, { expiresIn : "20m"})
     return tokenForNewPassword
 }
 
