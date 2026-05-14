@@ -2,3 +2,4 @@ node_modules/
 important-data.txt
 route_handler.txt
 .env
+.DS_Store

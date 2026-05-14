@@ -6,6 +6,8 @@ const { validateSendRequest, validateReviewRequest } = require("../utils-helper/
 
 const requestRouter = express.Router()
 
+const sendEmail = require("../utils-helper/sendEmail.js")
+
 requestRouter.post("/request/send/:status/:toUserId", userAuth, async (req, res) => {
     try {
         const fromUserId = req.user._id
@@ -26,6 +28,9 @@ requestRouter.post("/request/send/:status/:toUserId", userAuth, async (req, res)
         });
 
         const data = await connectionRequest.save()
+
+        const emailResponse = await sendEmail.run("You have a new connection request from " + req.user.firstName + " " + req.user.lastName, req.user.firstName +" is interested in connecting with you on Coduo. Please log in to your account to review the request.");
+        console.log("Email Response: ", emailResponse);
 
         res.json({
             message: "Connection request sent successfully",

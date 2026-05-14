@@ -13,6 +13,8 @@ const userRouter = require("./src/router/user.js")
 // creating an instance of express
 const app = express()
 
+require('./src/utils-helper/cronJob') 
+
 app.use(cors({
     origin: process.env.FRONTEND_URL,
     credentials: true,
