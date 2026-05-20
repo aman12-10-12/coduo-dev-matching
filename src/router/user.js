@@ -49,22 +49,25 @@ userRouter.get("/user/connection", userAuth, async (req, res) => {
         if (!connectionRequestData || connectionRequestData.length === 0) {
             return res.json({
                 message: "No connection found",
-                finalData: [],
+                data: [],
             });
         }
 
         const finalData = connectionRequestData.map((row) => {
-            if(row.fromUserId.toString() === loggedInUser._id.toString())
-            {
-                return row.toUserId
-            }
-            return row.fromUserId
-        })
+            const isSender = row.fromUserId._id.equals(loggedInUser._id);
+            return isSender ? row.toUserId : row.fromUserId;
+        });
 
-        res.json({ finalData })
+        res.json({ 
+            message: "Connections fetched successfully",
+            data: finalData
+         })
 
     } catch (err) {
-        res.status(400).send("ERROR : ", err.message)
+        res.status(500).json({
+            message: "Something went wrong",
+            error: err.message
+        });
     }
 })
 
