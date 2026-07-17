@@ -1,3 +1,9 @@
+## Email Service
+
+The project uses Amazon SES for email notifications.
+
+**Note:** The AWS account is currently in the SES Sandbox. Therefore, emails can only be sent to verified email addresses and may only be received by the verified email account until production access is granted.
+
 # Coduo — Developer Matching Backend
 
 Backend API for **Coduo**, a developer networking platform where users discover peers, send connection requests , match on mutual interest, and chat in real time.
